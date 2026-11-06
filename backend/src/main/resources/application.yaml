@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: pedidos
+  mongodb:
+    uri: ${MONGODB_URI}
+    database: pedidos
+  cloud:
+    gcp:
+      project-id: pedidos-local
+      pubsub:
+        emulator-host: localhost:8085
+
+pedidos:
+  pubsub:
+    topic-estado-cambiado: pedidos.estado-cambiado

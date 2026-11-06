@@ -1,0 +1,87 @@
+asyncapi: 3.0.0
+info:
+  title: Pedidos Events
+  description: Eventos de dominio publicados por el servicio de pedidos.
+  version: 1.0.0
+
+servers:
+  local:
+    host: localhost:8085
+    protocol: http
+    description: Emulador de Google Pub/Sub (docker-compose)
+
+defaultContentType: application/json
+
+channels:
+  pedidos.estado-cambiado:
+    address: pedidos.estado-cambiado
+    description: Topic donde se publica cada cambio de estado de un pedido.
+    messages:
+      estadoCambiado:
+        $ref: "#/components/messages/EstadoCambiado"
+
+operations:
+  publicarEstadoCambiado:
+    action: send
+    summary: Publica EstadoCambiado cuando un pedido cambia de estado
+    channel:
+      $ref: "#/channels/pedidos.estado-cambiado"
+    messages:
+      - $ref: "#/channels/pedidos.estado-cambiado/messages/estadoCambiado"
+
+components:
+  messages:
+    EstadoCambiado:
+      name: EstadoCambiado
+      title: Estado de pedido cambiado
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          tipoEvento:
+            type: string
+            const: EstadoCambiado
+      payload:
+        $ref: "#/components/schemas/EstadoCambiadoPayload"
+      examples:
+        - payload:
+            idEvento: "3f8e1c52-7a0b-4c1e-9d55-0a1b2c3d4e5f"
+            fechaEvento: "2026-11-04T10:15:30Z"
+            idPedido: "9b2d4f6a-1c3e-4a5b-8d7f-0e1a2b3c4d5e"
+            idCliente: "CLI-98765"
+            estadoAnterior: CREADO
+            estadoNuevo: PAGADO
+
+  schemas:
+    EstadoPedido:
+      type: string
+      enum:
+        - CREADO
+        - PAGADO
+        - EN_PREPARACION
+        - LISTO_PARA_RECOGER
+        - ENTREGADO
+        - CANCELADO
+
+    EstadoCambiadoPayload:
+      type: object
+      required: [idEvento, fechaEvento, idPedido, estadoAnterior, estadoNuevo]
+      properties:
+        idEvento:
+          type: string
+          format: uuid
+          description: Identificador único del evento (idempotencia en consumidores)
+        fechaEvento:
+          type: string
+          format: date-time
+        idPedido:
+          type: string
+          format: uuid
+          example: "9b2d4f6a-1c3e-4a5b-8d7f-0e1a2b3c4d5e"
+        idCliente:
+          type: string
+          example: "CLI-98765"
+        estadoAnterior:
+          $ref: "#/components/schemas/EstadoPedido"
+        estadoNuevo:
+          $ref: "#/components/schemas/EstadoPedido"
