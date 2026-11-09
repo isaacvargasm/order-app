@@ -3,6 +3,7 @@ package com.ejercicio.pedidos.infrastructure.config;
 import com.ejercicio.pedidos.application.port.in.ActualizarEstadoPedidoUseCase;
 import com.ejercicio.pedidos.application.port.in.ConsultarPedidoUseCase;
 import com.ejercicio.pedidos.application.port.in.CrearPedidoUseCase;
+import com.ejercicio.pedidos.application.port.out.PedidoPublisherPort;
 import com.ejercicio.pedidos.application.port.out.PedidoRepositoryPort;
 import com.ejercicio.pedidos.application.service.ActualizarEstadoPedidoService;
 import com.ejercicio.pedidos.application.service.ConsultarPedidoService;
@@ -24,7 +25,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    ActualizarEstadoPedidoUseCase actualizarEstadoPedidoUseCase(PedidoRepositoryPort pedidoRepositoryPort) {
-        return new ActualizarEstadoPedidoService(pedidoRepositoryPort);
+    ActualizarEstadoPedidoUseCase actualizarEstadoPedidoUseCase(PedidoRepositoryPort pedidoRepositoryPort,
+                                                                PedidoPublisherPort pedidoPublisherPort) {
+        return new ActualizarEstadoPedidoService(pedidoRepositoryPort, pedidoPublisherPort);
     }
 }
