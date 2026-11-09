@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,6 +24,6 @@ public class LineaPedidoRequest {
 
     @NotNull(message = "Precio es requerido")
     @PositiveOrZero(message = "Precio no puede ser negativo")
-    private Double precio;
+    private BigDecimal precio;
 
 }

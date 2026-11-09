@@ -4,8 +4,6 @@ import com.ejercicio.pedidos.domain.exception.TransicionInvalidaException;
 
 import lombok.Getter;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -18,16 +16,18 @@ public class Pedido {
     private List<LineaPedido> lineasPedido;
     private String tiendaEntrega;
     private EstadoPedido estado;
-    private Double total;
+    private Dinero total;
     private Instant fechaCreacion;
     private Instant fechaActualizacion;
+    private Long version;
 
     public Pedido(UUID id, String idCliente, Canal canal, List<LineaPedido> lineasPedido, String tiendaEntrega) {
-        this(id, idCliente, canal, lineasPedido, tiendaEntrega, EstadoPedido.CREADO, Instant.now(), Instant.now());
+        this(id, idCliente, canal, lineasPedido, tiendaEntrega, EstadoPedido.CREADO, Instant.now(), Instant.now(), null);
     }
 
     public Pedido(UUID id, String idCliente, Canal canal, List<LineaPedido> lineasPedido, String tiendaEntrega,
-                  EstadoPedido estado, Instant fechaCreacion, Instant fechaActualizacion) {
+                  EstadoPedido estado, Instant fechaCreacion, Instant fechaActualizacion, Long version) {
+        this.version = version;
         this.id = id;
         this.idCliente = idCliente;
         this.canal = canal;
@@ -69,11 +69,10 @@ public class Pedido {
         this.fechaActualizacion = Instant.now();
     }
 
-    public double calcularTotal() {
-        double suma = lineasPedido.stream()
-                .mapToDouble(lineaPedido -> lineaPedido.cantidad() * lineaPedido.precio())
-                .sum();
-        return BigDecimal.valueOf(suma).setScale(2, RoundingMode.HALF_UP).doubleValue();
+    private Dinero calcularTotal() {
+        return lineasPedido.stream()
+                .map(LineaPedido::obtenerTotalLinea)
+                .reduce(Dinero.CERO, Dinero::sumar);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.ejercicio.pedidos.infrastructure.adapter.in.web.exception;
 
+import com.ejercicio.pedidos.domain.exception.ConcurrenciaPedidoException;
 import com.ejercicio.pedidos.domain.exception.PedidoNoEncontradoException;
 import com.ejercicio.pedidos.domain.exception.TransicionInvalidaException;
 import com.ejercicio.pedidos.infrastructure.adapter.in.web.dto.response.ErrorResponse;
@@ -59,6 +60,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleTransicionInvalida(TransicionInvalidaException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErrorResponse("TRANSICION_INVALIDA", ex.getMessage()));
+    }
+
+    @ExceptionHandler(ConcurrenciaPedidoException.class)
+    public ResponseEntity<ErrorResponse> handleConflictoConcurrencia(ConcurrenciaPedidoException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse("CONCURRENCIA_PEDIDO", ex.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleArgumentoInvalido(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse("SOLICITUD_INVALIDA", ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

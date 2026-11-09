@@ -2,8 +2,8 @@ package com.ejercicio.pedidos.infrastructure.adapter.in.web.dto.response;
 
 import com.ejercicio.pedidos.domain.model.Canal;
 import com.ejercicio.pedidos.domain.model.EstadoPedido;
-import com.ejercicio.pedidos.domain.model.LineaPedido;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -13,8 +13,8 @@ public record CrearPedidoResponse(
         String idCliente,
         Canal canal,
         EstadoPedido estado,
-        List<LineaPedido> lineasPedido,
-        Double total,
+        List<LineaPedidoResponse> lineasPedido,
+        BigDecimal total,
         String tiendaEntrega,
         Instant fechaCreacion,
         Instant fechaActualizacion) {

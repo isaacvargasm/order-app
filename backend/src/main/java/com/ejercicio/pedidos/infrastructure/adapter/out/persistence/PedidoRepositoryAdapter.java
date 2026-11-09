@@ -1,12 +1,14 @@
 package com.ejercicio.pedidos.infrastructure.adapter.out.persistence;
 
 import com.ejercicio.pedidos.application.port.out.PedidoRepositoryPort;
+import com.ejercicio.pedidos.domain.exception.ConcurrenciaPedidoException;
 import com.ejercicio.pedidos.domain.exception.PedidoNoEncontradoException;
 import com.ejercicio.pedidos.domain.model.EstadoPedido;
 import com.ejercicio.pedidos.domain.model.Pedido;
 import com.ejercicio.pedidos.infrastructure.adapter.out.persistence.document.PedidoDocument;
 import com.ejercicio.pedidos.infrastructure.adapter.out.persistence.mapper.PedidoDocumentMapper;
 import com.ejercicio.pedidos.infrastructure.adapter.out.persistence.repository.PedidoMongoRepository;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -26,8 +28,12 @@ public class PedidoRepositoryAdapter implements PedidoRepositoryPort {
     @Override
     public Pedido guardar(Pedido pedido) {
         PedidoDocument pedidoDocument = mapper.toDocument(pedido);
-        PedidoDocument savedPedidoDocument = repository.save(pedidoDocument);
-        return mapper.toDomain(savedPedidoDocument);
+        try {
+            PedidoDocument savedPedidoDocument = repository.save(pedidoDocument);
+            return mapper.toDomain(savedPedidoDocument);
+        } catch (OptimisticLockingFailureException ex) {
+            throw new ConcurrenciaPedidoException(pedido.getId());
+        }
     }
 
     @Override

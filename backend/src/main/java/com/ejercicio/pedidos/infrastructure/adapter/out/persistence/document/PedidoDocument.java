@@ -5,6 +5,7 @@ import com.ejercicio.pedidos.domain.model.EstadoPedido;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
@@ -31,5 +32,8 @@ public class PedidoDocument {
     private Instant fechaCreacion;
     
     private Instant fechaActualizacion;
+
+    @Version
+    private Long version;
 
 }
