@@ -6,7 +6,6 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react()],
   server: {
-    // El backend no tiene CORS: en desarrollo las llamadas a /pedidos se redirigen a Spring Boot.
     proxy: {
       '/pedidos': 'http://localhost:8080',
     },

@@ -4,7 +4,6 @@ import type { CambioEstadoRespuesta, Pedido } from '../types'
 
 interface Props {
   pedido: Pick<Pedido, 'id' | 'estado'>
-  /** Deshabilita las acciones desde fuera (p. ej. mientras se recarga el pedido). */
   deshabilitado?: boolean
   onCambiado: (respuesta: CambioEstadoRespuesta) => void
   onRecargar: () => void
@@ -32,7 +31,7 @@ export function AccionesEstado({ pedido, deshabilitado = false, onCambiado, onRe
             disabled={enviando || deshabilitado}
             onClick={() => void cambiarEstado(destino)}
           >
-            {enviando && estadoSolicitado === destino ? 'Guardando…' : ACCION_HACIA_ESTADO[destino]}
+            {enviando && estadoSolicitado === destino ? 'Guardando...' : ACCION_HACIA_ESTADO[destino]}
           </button>
         ))}
       </div>

@@ -56,6 +56,7 @@ Propuesta de solución:
 
 ```
 @Component
+@Slf4j
 public class EstadoCambiadoListener {
     private final NotificacionService notificaciones;
     private final EventosRecibidosRepository recibidosRepo;
@@ -179,12 +180,15 @@ Para mí, un Definition of Done debe cumplir con lo siguiente:
 - Pull request aprobado y mergeado
 - Que se cumpla con los criterios de aceptación establecidos
 - Contar con evidencia de funcionamiento correcto en ambientes bajos
-- Dependiendo de los acuerdos realizados con el equipo, si el Definition of Done no requiere despliegue a producción, entonces se debe contar con todo lo necesario para poder desplegar a producción. 
+- Dependiendo de los acuerdos realizados con el equipo: 
+  - Si el Definition of Done no requiere despliegue a producción, entonces se debe contar con todo lo necesario para poder desplegar a producción.
+  - Por el contrario, si se requiere despliegue a producción, entonces se debe contar con evidencia de ello.
 
 
 Lo que siempre reviso en un pull request:
 - Validación de datos de entrada
 - Clean code
+- Los cambios deben abarcar solamente la funcionalidad requerida
 - Commit message descriptivo de la funcionalidad que se está agregando o actualizando
 - Debe contar con suficientes pruebas unitarias
 - No se deben introducir vulnerabilidades

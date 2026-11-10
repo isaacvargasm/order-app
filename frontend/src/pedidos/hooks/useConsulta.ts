@@ -11,12 +11,6 @@ type Resultado<T> =
   | { base: string; clave: string; datos: T; error: null }
   | { base: string; clave: string; datos: null; error: unknown }
 
-/**
- * Carga datos de forma asíncrona cada vez que cambia `clave` (null = no consultar).
- * - Cancela la petición anterior (AbortController) para evitar respuestas fuera de orden.
- * - Al recargar la misma clave mantiene los datos previos visibles mientras llega la respuesta.
- * `cargar` debe ser estable para una misma clave (useCallback).
- */
 export function useConsulta<T>(
   clave: string | null,
   cargar: (signal: AbortSignal) => Promise<T>,

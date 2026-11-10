@@ -11,7 +11,6 @@ const BASE_URL = import.meta.env.VITE_API_URL ?? ''
 export const CODIGO_CONCURRENCIA = 'CONCURRENCIA_PEDIDO'
 export const CODIGO_TRANSICION_INVALIDA = 'TRANSICION_INVALIDA'
 
-/** Error de la API con el status HTTP y el `codigo` del backend (si vino). status 0 = sin conexión. */
 export class ApiError extends Error {
   readonly status: number
   readonly codigo: string | null

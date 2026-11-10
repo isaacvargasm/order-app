@@ -30,7 +30,7 @@ export function ListaPedidos({ consulta, hayCliente, idSeleccionado, onSeleccion
   }
 
   if (pedidos === null) {
-    return <p role="status">Cargando pedidos…</p>
+    return <p role="status">Cargando pedidos...</p>
   }
 
   if (pedidos.length === 0) {
@@ -40,7 +40,7 @@ export function ListaPedidos({ consulta, hayCliente, idSeleccionado, onSeleccion
   return (
     <div>
       <p role="status" className="estado-carga">
-        {cargando ? 'Actualizando…' : `${pedidos.length} pedido(s)`}
+        {cargando ? 'Actualizando...' : `${pedidos.length} pedido(s)`}
       </p>
       <ul className="lista-pedidos">
         {pedidos.map((pedido) => (

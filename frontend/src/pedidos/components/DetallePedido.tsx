@@ -9,7 +9,6 @@ import { EstadoBadge } from './EstadoBadge'
 
 interface Props {
   idPedido: string
-  /** Se llama cuando el estado del pedido cambió o se recargó, para refrescar la lista. */
   onPedidoActualizado: () => void
 }
 
@@ -19,7 +18,7 @@ export function DetallePedido({ idPedido, onPedidoActualizado }: Props) {
 
   const manejarCambio = useCallback(
     (respuesta: CambioEstadoRespuesta) => {
-      setAviso(`Estado actualizado a «${ETIQUETA_ESTADO[respuesta.estado]}».`)
+      setAviso(`Estado actualizado a '${ETIQUETA_ESTADO[respuesta.estado]}'.`)
       recargar()
       onPedidoActualizado()
     },
@@ -44,7 +43,7 @@ export function DetallePedido({ idPedido, onPedidoActualizado }: Props) {
   }
 
   if (pedido === null) {
-    return <p role="status">Cargando pedido…</p>
+    return <p role="status">Cargando pedido...</p>
   }
 
   return (
@@ -102,7 +101,6 @@ export function DetallePedido({ idPedido, onPedidoActualizado }: Props) {
         {aviso}
       </p>
 
-      {/* key: al cambiar el estado se reinicia el formulario de acciones (errores incluidos). */}
       <AccionesEstado
         key={`${pedido.id}-${pedido.estado}`}
         pedido={pedido}

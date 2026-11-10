@@ -81,7 +81,7 @@ cd frontend && npm test
 ## Arquitectura hexagonal del proyecto.
 
 - `domain`. Contiene los objetos de dominio: `Pedido`, `LineaPedido`, `EstadoPedido`, `Dinero` y `Canal`, así como reglas de negocio. Además, contiene excepciones y el evento EstadoCambiado.
-- `application`. Contiene los puertos de entrada que corresponden a los casos de uso para crear un pedido, consultar pedido y actualizar el estado de un pedido. Tiene también los puertos de salida: `PedidoRepositoryPort` y `PedidoPublisherPort`. Aquí también se encuentran los servicios que implementan los casos de uso.
+- `application`. Contiene los puertos de entrada que corresponden a los casos de uso para crear un pedido (`CrearPedidoUseCase`), consultar pedido (`ConsultarPedidoUseCase`) y actualizar el estado de un pedido (`ActualizarEstadoPedidoUseCase`). Tiene también los puertos de salida: `PedidoRepositoryPort` y `PedidoPublisherPort`. Aquí también se encuentran los servicios que implementan los casos de uso `CrearPedidoService`, `ConsultarPedidoService` y `ActualizarEstadoPedidoService`.
 - `infrastructure`. Contiene el `PedidoController`, adaptador de entrada que utiliza los casos de uso mencionados. Tiene también los adaptadores de salida `PedidoRepositoryAdapter` y `PedidoPubSubPublisherAdapter`, así como clases de configuración de beans de Spring. Contiene el `GlobalExceptionHandler`.
 
 ## Contratos.
@@ -126,6 +126,6 @@ Del lado del consumidor, considerando que los eventos tienen el campo único `id
 
 | Situación | Acción |
 |---|---|
-| El procesamiento terminó correctamente | Hacer **ack** |
-| El `idEvento` ya existe en `eventos_procesados` (duplicado) | Hacer **ack** (sin reprocesar) |
-| Ocurrió un error | **No** hacer ack, para que Pub/Sub reentregue el evento |
+| El procesamiento terminó correctamente | Hacer ack |
+| El `idEvento` ya existe en `eventos_procesados` (duplicado) | Hacer ack (sin reprocesar) |
+| Ocurrió un error | No hacer ack, para que Pub/Sub vuelva a enviar el evento |

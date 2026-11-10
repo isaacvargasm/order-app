@@ -6,7 +6,6 @@ import type { CambioEstadoRespuesta, EstadoPedido } from '../types'
 export interface CambiarEstado {
   cambiarEstado: (destino: EstadoPedido) => Promise<void>
   enviando: boolean
-  /** Estado al que se está intentando llevar el pedido (para el texto "Guardando…"). */
   estadoSolicitado: EstadoPedido | null
   error: ErrorCambioEstado | null
   limpiarError: () => void
@@ -16,8 +15,7 @@ export function useCambiarEstado(
   idPedido: string,
   onCambiado: (respuesta: CambioEstadoRespuesta) => void,
 ): CambiarEstado {
-  // El ref bloquea el doble envío de inmediato; el estado `enviando` solo se refleja tras re-renderizar,
-  // así que dos clics muy seguidos podrían colarse si dependiéramos solo de él.
+
   const enVuelo = useRef(false)
   const [enviando, setEnviando] = useState(false)
   const [estadoSolicitado, setEstadoSolicitado] = useState<EstadoPedido | null>(null)

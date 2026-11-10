@@ -18,7 +18,7 @@ describe('useCambiarEstado', () => {
     actualizarEstadoMock.mockReset()
   })
 
-  it('evita el doble envío mientras hay una petición en curso', async () => {
+  it('Evita el doble envío mientras hay una petición en curso', async () => {
     let resolver: (valor: CambioEstadoRespuesta) => void = () => {}
     actualizarEstadoMock.mockReturnValue(
       new Promise<CambioEstadoRespuesta>((resolve) => {
@@ -28,7 +28,6 @@ describe('useCambiarEstado', () => {
     const onCambiado = vi.fn()
     const { result } = renderHook(() => useCambiarEstado(ID, onCambiado))
 
-    // Dos llamadas en el mismo tick (doble clic antes de que React re-renderice).
     let primera: Promise<void> = Promise.resolve()
     act(() => {
       primera = result.current.cambiarEstado('PAGADO')
@@ -49,7 +48,7 @@ describe('useCambiarEstado', () => {
     expect(onCambiado).toHaveBeenCalledWith(RESPUESTA)
   })
 
-  it('permite reintentar después de un error y expone el conflicto 409', async () => {
+  it('Reintentar después de un error y expone el 409', async () => {
     actualizarEstadoMock.mockRejectedValueOnce(new ApiError(409, 'Modificado por otro usuario', 'CONCURRENCIA_PEDIDO'))
     actualizarEstadoMock.mockResolvedValueOnce(RESPUESTA)
     const onCambiado = vi.fn()
